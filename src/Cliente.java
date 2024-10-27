@@ -1,26 +1,23 @@
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-public class Cliente extends AtributosComunes implements MetodosComunes {
+public class Cliente extends AtributosComunes {
     private LocalDate fechaNacimiento;
-    private int informacionContacto;
+    private long informacionContacto;
     public void setFechaNacimiento(LocalDate fechaNacimiento){
         this.fechaNacimiento = fechaNacimiento;
     }
-    public void setInformacionContacto(int informacionContacto){
+    public void setInformacionContacto(long informacionContacto){
         this.informacionContacto = informacionContacto;
     }
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
-    public int getInformacionContacto() {
+    public long getInformacionContacto() {
         return informacionContacto;
     }
-    public Cliente(String nombre, int codigo, LocalDate fechaNacimiento, int informacionContacto){
+    public Cliente(String nombre, int codigo, LocalDate fechaNacimiento, long informacionContacto){
         this.nombre = nombre;
         this.codigo = codigo;
         this.fechaNacimiento = fechaNacimiento;
@@ -28,29 +25,35 @@ public class Cliente extends AtributosComunes implements MetodosComunes {
     }
     public Cliente(){
     }
-    public void registro(ArrayList<AtributosComunes> lista){
+    public static void registro(ArrayList<AtributosComunes> lista){
         Scanner cin = new Scanner(System.in);
+        Cliente a = new Cliente();
+        LocalDate fechaNacimiento = LocalDate.now();
+        long informacionContacto = 0;
+        int codigo=0;
         System.out.println("Digite el nombre del cliente");
-        nombre = cin.nextLine();
+        a.setNombre(cin.nextLine());
         boolean valido = false;
-        System.out.println("Digite el codigo del cliente:");
+        System.out.println("Digite el codigo de identificacion del cliente:");
         while (valido == false) {
             try {
-                codigo = Integer.parseInt(cin.nextLine());
+                a.setCodigo(Integer.parseInt(cin.nextLine()),a,lista);
                 valido = true;
             } catch (NumberFormatException e) {
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
                 valido = false;
+            } catch (ExcepcionCodigoRepetido e){
+                System.out.println("Error, el codigo digitado ya lo tiene otro cliente");
             }
-        }
+        }   
         valido = false;
         System.out.println("Digite la fecha de nacimiento(yyyy-mm-dd)");
         while(valido == false){
             try{
-                fechaNacimiento = LocalDate.parse(cin.nextLine());
+                a.setFechaNacimiento(LocalDate.parse(cin.nextLine()));
                 valido = true;
             }catch(DateTimeParseException e){
-                System.out.println("La fecha no cumple el formato adecuado, vuelva a intentar");
+                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd) , vuelva a intentar");
                 valido = false;
             }
         }
@@ -58,7 +61,7 @@ public class Cliente extends AtributosComunes implements MetodosComunes {
         System.out.println("Digite el numero de contacto");
         while (valido == false) {
             try {
-                informacionContacto = Integer.parseInt(cin.nextLine());
+                a.setInformacionContacto(Long.parseLong(cin.nextLine()));
                 valido = true;
             } catch (NumberFormatException e) {
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
@@ -66,10 +69,11 @@ public class Cliente extends AtributosComunes implements MetodosComunes {
             }
         }
         valido = false;
-        lista.add(new Cliente(nombre, codigo, fechaNacimiento, informacionContacto));
+        lista.add(a);
     }
-    public void buscar(ArrayList<AtributosComunes> lista){
+    public static void buscar(ArrayList<AtributosComunes> lista){
         String nombre;
+        int k=0;
         System.out.println("Digite el nombre del cliente");
         Scanner cin = new Scanner(System.in);
         nombre = cin.nextLine();
@@ -77,13 +81,14 @@ public class Cliente extends AtributosComunes implements MetodosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof Cliente){
                 Cliente a = (Cliente)p; 
-                if(a.getNombre().equals(nombre)){
-                    System.out.println("Nombre: "+a.getNombre()+"\nCodigo: " + a.getCodigo()+"\nFecha de nacimiento: " + a.getFechaNacimiento()+"\nInformacion contacto: " + a.getInformacionContacto());    
+                if(a.getNombre().contains(nombre)){
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    k++;
                 }
             }
         }
     }
-    public void eliminar(ArrayList<AtributosComunes> lista){
+    public static void eliminar(ArrayList<AtributosComunes> lista){
         ArrayList<Cliente> listaClientes = new ArrayList();
         String nombre;
         int codigoBuscado = 0;
@@ -91,69 +96,192 @@ public class Cliente extends AtributosComunes implements MetodosComunes {
         int k=0;
         int op = 0;
         int posk = 0;
+        int tam = 0;
         boolean valido = false;
-        boolean seguro = false;
+        boolean seguro = true;
         boolean opcion = false;
         String eleccion = "";
         System.out.println("Digite el nombre del cliente que desea eliminar");
         Scanner cin = new Scanner(System.in);
         nombre = cin.nextLine();
-        System.out.println("Clientes encontrados con: " + nombre);
+        System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
             if(p instanceof Cliente){
                 Cliente a = (Cliente)p; 
-                if(a.getNombre().equals(nombre)){
+                if(a.getNombre().contains(nombre)){
                     listaClientes.add(a);
+                    tam++;
                     encontrado = true;
                     System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
                     k++;
                 }
-            }
-            
+            } 
         }
         k = 0;
         if(encontrado == true){
-            System.out.println("Cuál de los anteriores desea eliminar? Digite su numero: ");
+            System.out.println("Cual de los clientes desea eliminar? Digite el numero del resultado de busqueda: ");
             while(valido == false){
                 try{
                     op = Integer.parseInt(cin.nextLine());
+                    if(op>tam){
+                        throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                    }
                     valido = true;
                 }catch(NumberFormatException e){
                     System.out.println("Error, debe ingresar un número, trate de nuevo");
                     valido = false;
+                }catch(ExcepcionIndicePorFueraDelLimite e){
+                    System.out.println("Desea cancelar la operacion? Si/No ");
+                    if(cin.nextLine().toLowerCase().equals("si")){
+                        valido = true;
+                        seguro = false;
+                    }
                 }
             }
-            valido = false;
-            for(Cliente p : listaClientes){
-                if(k == op-1){
-                    codigoBuscado = p.getCodigo();
-                }
-                k++;
-            }
-            System.out.println("Estas seguro?si-no");
-            while (opcion == false) {
-                eleccion = cin.nextLine();
-                eleccion = eleccion.toLowerCase();
-                if(eleccion.equals("si")){
-                    opcion = true;
-                    seguro = true;
-                }else if(eleccion.equals("no")){
-                    opcion = true;
-                }else{
-                    System.out.println("Vuelva a intentar");
-                }
-            }
-            if(seguro == true){
-                k = 0;
-                for(AtributosComunes p : lista){
-                    if(p.getCodigo() == codigoBuscado){
-                        posk = k;
-                    } 
+            if(seguro==true){
+                for(Cliente p : listaClientes){
+                    if(k == op-1){
+                        codigoBuscado = p.getCodigo();
+                    }
                     k++;
-                } 
-                lista.remove(posk);
-            }else{
-                System.out.println("operacion anulada :D");
+                }
+                System.out.println("Estas seguro? Si/No ");
+                while (opcion == false) {
+                    eleccion = cin.nextLine();
+                    eleccion = eleccion.toLowerCase();
+                    if(eleccion.equals("si")){
+                        opcion = true;
+                    }else if(eleccion.equals("no")){
+                        opcion = true;
+                        seguro = false;
+                    }else{
+                        System.out.println("Opcion invalida, vuelva a intentar");
+                    }
+                }
+                if(seguro == true){
+                    k = 0;
+                    for(AtributosComunes p : lista){
+                        if(p.getCodigo() == codigoBuscado){
+                            posk = k;
+                        } 
+                        k++;
+                    } 
+                    lista.remove(posk);
+                }else{
+                    System.out.println("operacion anulada :D");
+                }
+            }
+        }
+    }
+    public static void modificar(ArrayList<AtributosComunes> lista){
+        int tam = 0;
+        int k = 0;
+        int posEncontrada = 0;
+        int op = 0;
+        int op2 = 0;
+        boolean valido = false;
+        boolean encontrado = false;
+        boolean seguro = true;
+        boolean otraVez = true;
+        String auxStr = "";
+        LocalDate auxFecha = LocalDate.now();
+        ArrayList<Cliente> listaClientes = new ArrayList();
+        System.out.println("Digite el nombre del cliente que desea modificar");
+        Scanner cin = new Scanner(System.in);
+        String nombre = cin.nextLine();
+        System.out.println("Resultados de Busqueda: ");
+        for(AtributosComunes p : lista){
+            if(p instanceof Cliente){
+                Cliente a = (Cliente)p; 
+                if(a.getNombre().contains(nombre)){
+                    listaClientes.add(a);
+                    tam++;
+                    encontrado = true;
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    k++;
+                }
+            } 
+        }
+        k = 0;
+        if(encontrado == true){
+            System.out.println("Cual de los clientes desea modificar? Digite el numero del resultado de busqueda: ");
+            while(valido == false){
+                try{
+                    op = Integer.parseInt(cin.nextLine());
+                    if(op>tam){
+                        throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                    }
+                    valido = true;
+                }catch(NumberFormatException e){
+                    System.out.println("Error, debe ingresar un número, trate de nuevo");
+                    valido = false;
+                }catch(ExcepcionIndicePorFueraDelLimite e){
+                    System.out.println("Desea cancelar la operacion? Si/No ");
+                    if(cin.nextLine().toLowerCase().equals("si")){
+                        valido = true;
+                        seguro = false;
+                    }
+                }
+            }
+            if(seguro==true){
+                Cliente a = listaClientes.get(op-1);
+                for(AtributosComunes p : lista){
+                    if(a.getCodigo()==p.getCodigo()){
+                        posEncontrada = k;
+                    }
+                    k++;
+                }
+                while(otraVez == true){
+                    System.out.println("Que desea cambiar del cliente seleccionado? Digite el numero de opcion\n1. Nombre\n2. Codigo\n3. Fecha de nacimiento\n4. Informacion de contacto\n5. Salir");
+                    valido=false;
+                    while(valido==false){
+                        try {
+                            op2 = Integer.parseInt(cin.nextLine());
+                            valido = true;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error, solo puede digitar numeros validos, intente de nuevo");
+                        }
+                    }
+                    valido=false;
+                    switch (op2) {
+                        case 1:
+                            System.out.println("Escriba el nuevo nombre");
+                            a.setNombre(cin.nextLine());
+                            break;
+                        case 2:
+                            System.out.println("Escriba el nuevo codigo");
+                            while(valido==false){
+                                try {
+                                    a.setCodigo(Integer.parseInt(cin.nextLine()),a,lista);
+                                    valido = true;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Error, debe digitar solo numeros validos, intente de nuevo");
+                                } catch (ExcepcionCodigoRepetido e){
+                                    System.out.println("Error, el codigo digitado ya lo tiene otro cliente, intente de nuevo");
+                                }
+                            }
+                            break;
+                        case 3:
+                            System.out.println("Escriba la nueva fecha de nacimiento (yyyy-mm-dd)");
+                            while(valido==false){
+                                try {
+                                    a.setFechaNacimiento(LocalDate.parse(cin.nextLine()));
+                                    valido = true;
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Error, la fecha no sigue el formato indicado, intente de nuevo");
+                                }
+                            }
+                            break;
+                        case 4:
+                            System.out.println("Escriba la nueva informacion de contacto");
+                            a.setInformacionContacto(Long.parseLong(cin.nextLine()));
+                            break;
+                        default:
+                            otraVez=false;
+                            break;
+                    }
+                }
+                lista.set(posEncontrada,a);
             }
         }
     }

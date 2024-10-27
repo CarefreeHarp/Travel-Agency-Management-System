@@ -1,0 +1,13 @@
+https://github.com/CarefreeHarp/Travel-Agency-Management-System
+
+Actualizaciones del proyecto
+
+Commit #2 (Clase PlanTuristico y metodos de modificar){
+	- Creé la clase Plan Turístico
+	- Creé el metodo para modificar clientes
+	- Creé el metodo para modificar clientes
+	- Creé la excepción de "ExcepcionIndicePorFueraDelLimite" para controlar que a la hora de que el usuario elija cual objeto modificar/eliminar nos aseguremos de que esté dentro del tamaño arreglo
+	- Modifiqué el método setCodigo de la clase AtributosComunes. Cada vez que se llama a este método, verifica en todo el ArrayList de objetos que no se repita el mismo código para la misma clase (Si se puede repetir código si dos 	objetos son de diferentes clases)
+	- Creé la excepción de "ExcepcionCodigoRepetido" para que el método setCódigo de la clase AtributosComunes lo pueda tirar y podamos controlarlo
+	- El main ya esta habilitado para usar todos lo que hemos programado
+}
