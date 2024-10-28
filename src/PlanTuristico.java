@@ -65,10 +65,6 @@ public class PlanTuristico extends AtributosComunes {
     }
 
     public static void registro(ArrayList<AtributosComunes> lista) {
-        int codigo = 0;
-        int precio = 0;
-        LocalDate fechaInicio = LocalDate.now();
-        LocalDate fechaFin = LocalDate.now();
         boolean valido = false;
         Scanner cin = new Scanner(System.in);
         PlanTuristico a =new PlanTuristico();
@@ -131,7 +127,7 @@ public class PlanTuristico extends AtributosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof PlanTuristico){
                 PlanTuristico a = (PlanTuristico) p;
-                if(a.getNombre().contains(nombre)){
+                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
                     System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: "+a.getCodigo()+"\n   Descripcion: "+a.getDescripcion()+"\n   Destino: "+a.getDestino()+"\n   Fecha de inicio: "+a.getFechaInicio()+"\n   Fecha de fin: "+a.getFechaFin()+"\n   Precio: $"+a.getPrecio());
                     k++;
                 }
@@ -157,7 +153,7 @@ public class PlanTuristico extends AtributosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof PlanTuristico){
                 PlanTuristico a = (PlanTuristico) p;
-                if(a.getNombre().contains(nombre)){
+                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
                     listaPlanes.add(a);
                     encontrado = true;
                     System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: "+a.getCodigo()+"\n   Descripcion: "+a.getDescripcion()+"\n   Destino: "+a.getDestino()+"\n   Fecha de inicio: "+a.getFechaInicio()+"\n   Fecha de fin: "+a.getFechaFin()+"\n   Precio: $"+a.getPrecio());
@@ -168,11 +164,11 @@ public class PlanTuristico extends AtributosComunes {
         }
         k = 0;
         if(encontrado == true){
-            System.out.println("Cual de los planes desea eliminar? Digite el numero del resultado de busqueda: ");
             while(valido == false){
+                System.out.println("Cual de los planes desea eliminar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam){
+                    if(op>tam|| op<1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -181,7 +177,7 @@ public class PlanTuristico extends AtributosComunes {
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().equals("si")){
+                    if(cin.nextLine().toLowerCase().contains("si")){
                         valido = true;
                         seguro = false;
                     }
@@ -198,9 +194,9 @@ public class PlanTuristico extends AtributosComunes {
                 while (opcion == false) {
                     eleccion = cin.nextLine();
                     eleccion = eleccion.toLowerCase();
-                    if(eleccion.equals("si")){
+                    if(eleccion.contains("si")){
                         opcion = true;
-                    }else if(eleccion.equals("no")){
+                    }else if(eleccion.contains("no")){
                         opcion = true;
                         seguro = false;
                     }else{
@@ -240,7 +236,7 @@ public class PlanTuristico extends AtributosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof PlanTuristico){
                 PlanTuristico a = (PlanTuristico)p; 
-                if(a.getNombre().contains(nombre)){
+                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;
@@ -251,11 +247,11 @@ public class PlanTuristico extends AtributosComunes {
         }
         k = 0;
         if(encontrado == true){
-            System.out.println("Cual de los planes desea modificar? Digite el numero del resultado de busqueda: ");
             while(valido == false){
+                System.out.println("Cual de los planes desea modificar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam){
+                    if(op>tam|| op<1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -264,7 +260,7 @@ public class PlanTuristico extends AtributosComunes {
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().equals("si")){
+                    if(cin.nextLine().toLowerCase().contains("si")){
                         valido = true;
                         seguro = false;
                     }

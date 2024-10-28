@@ -2,7 +2,25 @@ https://github.com/CarefreeHarp/Travel-Agency-Management-System
 
 Actualizaciones del proyecto
 
+Commit #2 (Clase PlanTuristico y metodos de modificar){
+	- Creé la clase Plan Turístico
+	- Creé el metodo para modificar clientes
+	- Creé el metodo para modificar planes turisticos
+	- Creé la excepción de "ExcepcionIndicePorFueraDelLimite" para controlar que a la hora de que el usuario elija cual objeto modificar/eliminar nos aseguremos de que esté dentro del tamaño arreglo
+	- Modifiqué el método setCodigo de la clase AtributosComunes. Cada vez que se llama a este método, verifica en todo el ArrayList de objetos que no se repita el mismo código para la misma clase (Si se puede repetir código si dos 	objetos son de diferentes clases)
+	- Creé la excepción de "ExcepcionCodigoRepetido" para que el método setCódigo de la clase AtributosComunes lo pueda tirar y podamos controlarlo
+	- El main ya esta habilitado para usar todos lo que hemos programado
+}
+
 Commit #3 (Clase Vuelos){
 	- Creé la clase Plan vuelos 
-	-Manejé algunas advertencias leves del compilador
+	- Manejé algunas advertencias leves del compilador
+}
+
+Commit #4 (Clase hotel y Clase Aerolinea){
+	- Creamos la clase Aerolinea
+	- Creamos la clase Hotel
+	- Creamos una nueva excepcion "ExcepcionMasDeCincoEstrellas" para no dejar digitar una categoria inferior a 1 ni superior a 5 estrellas en los hoteles
+	- El metodo setCategoria de los hoteles tira la excepcion "ExcepcionMasDeCincoEstrellas"
+	- Las confirmaciones de eliminacion de objetos ahora se pueden confirmar siempre y cuando el usuario digite un si a lo largo de todo el string usando .tolowercase().contains("si")
 }

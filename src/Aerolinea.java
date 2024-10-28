@@ -1,37 +1,20 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-public class Cliente extends AtributosComunes {
-    private LocalDate fechaNacimiento;
-    private long informacionContacto;
-    public void setFechaNacimiento(LocalDate fechaNacimiento){
-        this.fechaNacimiento = fechaNacimiento;
-    }
-    public void setInformacionContacto(long informacionContacto){
-        this.informacionContacto = informacionContacto;
-    }
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-    public long getInformacionContacto() {
-        return informacionContacto;
-    }
-    public Cliente(String nombre, int codigo, LocalDate fechaNacimiento, long informacionContacto){
+
+public class Aerolinea extends AtributosComunes{
+    public Aerolinea(String nombre, int codigo){
         this.nombre = nombre;
         this.codigo = codigo;
-        this.fechaNacimiento = fechaNacimiento;
-        this.informacionContacto = informacionContacto;
     }
-    public Cliente(){
+    public Aerolinea(){
     }
     public static void registro(ArrayList<AtributosComunes> lista){
         Scanner cin = new Scanner(System.in);
-        Cliente a = new Cliente();
-        System.out.println("Digite el nombre del cliente");
+        Aerolinea a = new Aerolinea();
+        System.out.println("Digite el nombre de la aerolinea");
         a.setNombre(cin.nextLine());
         boolean valido = false;
-        System.out.println("Digite el codigo de identificacion del cliente:");
+        System.out.println("Digite el codigo de identificacion de la aerolinea:");
         while (valido == false) {
             try {
                 a.setCodigo(Integer.parseInt(cin.nextLine()),a,lista);
@@ -40,53 +23,32 @@ public class Cliente extends AtributosComunes {
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
                 valido = false;
             } catch (ExcepcionCodigoRepetido e){
-                System.out.println("Error, el codigo digitado ya lo tiene otro cliente");
+                System.out.println("Error, el codigo digitado ya lo tiene otra aerolinea");
             }
         }   
-        valido = false;
-        System.out.println("Digite la fecha de nacimiento(yyyy-mm-dd)");
-        while(valido == false){
-            try{
-                a.setFechaNacimiento(LocalDate.parse(cin.nextLine()));
-                valido = true;
-            }catch(DateTimeParseException e){
-                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd) , vuelva a intentar");
-                valido = false;
-            }
-        }
-        valido = false;
-        System.out.println("Digite el numero de contacto");
-        while (valido == false) {
-            try {
-                a.setInformacionContacto(Long.parseLong(cin.nextLine()));
-                valido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Error, solo puede digitar numeros, intente de nuevo");
-                valido = false;
-            }
-        }
+       
         valido = false;
         lista.add(a);
     }
     public static void buscar(ArrayList<AtributosComunes> lista){
         String nombre;
         int k=0;
-        System.out.println("Digite el nombre del cliente");
+        System.out.println("Digite el nombre de la aerolinea");
         Scanner cin = new Scanner(System.in);
         nombre = cin.nextLine();
-        System.out.println("Clientes encontrados con nombre: " + nombre);
+        System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
-            if(p instanceof Cliente){
-                Cliente a = (Cliente)p; 
+            if(p instanceof Aerolinea){
+                Aerolinea a = (Aerolinea)p; 
                 if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo());    
                     k++;
                 }
             }
         }
     }
     public static void eliminar(ArrayList<AtributosComunes> lista){
-        ArrayList<Cliente> listaClientes = new ArrayList();
+        ArrayList<Aerolinea> listaAerolineas = new ArrayList<>();
         String nombre;
         int codigoBuscado = 0;
         boolean encontrado = false;
@@ -98,18 +60,18 @@ public class Cliente extends AtributosComunes {
         boolean seguro = true;
         boolean opcion = false;
         String eleccion = "";
-        System.out.println("Digite el nombre del cliente que desea eliminar");
+        System.out.println("Digite el nombre de la aerolinea que desea eliminar");
         Scanner cin = new Scanner(System.in);
         nombre = cin.nextLine();
         System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
-            if(p instanceof Cliente){
-                Cliente a = (Cliente)p; 
+            if(p instanceof Aerolinea){
+                Aerolinea a = (Aerolinea)p; 
                 if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
-                    listaClientes.add(a);
+                    listaAerolineas.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo());    
                     k++;
                 }
             } 
@@ -117,10 +79,10 @@ public class Cliente extends AtributosComunes {
         k = 0;
         if(encontrado == true){
             while(valido == false){
-                System.out.println("Cual de los clientes desea eliminar? Digite el numero del resultado de busqueda: ");
+                System.out.println("Cual de las siguientes aerolineas desea eliminar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam|| op<1){
+                    if(op>tam || op<1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -136,7 +98,7 @@ public class Cliente extends AtributosComunes {
                 }
             }
             if(seguro==true){
-                for(Cliente p : listaClientes){
+                for(Aerolinea p : listaAerolineas){
                     if(k == op-1){
                         codigoBuscado = p.getCodigo();
                     }
@@ -180,19 +142,19 @@ public class Cliente extends AtributosComunes {
         boolean encontrado = false;
         boolean seguro = true;
         boolean otraVez = true;
-        ArrayList<Cliente> listaClientes = new ArrayList();
-        System.out.println("Digite el nombre del cliente que desea modificar");
+        ArrayList<Aerolinea> listaAerolineas = new ArrayList<>();
+        System.out.println("Digite el nombre de la aerolinea que desea modificar");
         Scanner cin = new Scanner(System.in);
         String nombre = cin.nextLine();
         System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
-            if(p instanceof Cliente){
-                Cliente a = (Cliente)p; 
+            if(p instanceof Aerolinea){
+                Aerolinea a = (Aerolinea)p; 
                 if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
-                    listaClientes.add(a);
+                    listaAerolineas.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo());    
                     k++;
                 }
             } 
@@ -200,7 +162,7 @@ public class Cliente extends AtributosComunes {
         k = 0;
         if(encontrado == true){
             while(valido == false){
-                System.out.println("Cual de los clientes desea modificar? Digite el numero del resultado de busqueda: ");
+                System.out.println("Cual de las aerolineas desea modificar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
                     if(op>tam|| op<1){
@@ -219,7 +181,7 @@ public class Cliente extends AtributosComunes {
                 }
             }
             if(seguro==true){
-                Cliente a = listaClientes.get(op-1);
+                Aerolinea a = listaAerolineas.get(op-1);
                 for(AtributosComunes p : lista){
                     if(a.getCodigo()==p.getCodigo()){
                         posEncontrada = k;
@@ -227,7 +189,7 @@ public class Cliente extends AtributosComunes {
                     k++;
                 }
                 while(otraVez == true){
-                    System.out.println("Que desea cambiar del cliente seleccionado? Digite el numero de opcion\n1. Nombre\n2. Codigo\n3. Fecha de nacimiento\n4. Informacion de contacto\n5. Salir");
+                    System.out.println("Que desea cambiar de la aerolinea seleccionado? Digite el numero de opcion\n1. Nombre\n2. Codigo\n3. Salir");
                     valido=false;
                     while(valido==false){
                         try {
@@ -252,24 +214,9 @@ public class Cliente extends AtributosComunes {
                                 } catch (NumberFormatException e) {
                                     System.out.println("Error, debe digitar solo numeros validos, intente de nuevo");
                                 } catch (ExcepcionCodigoRepetido e){
-                                    System.out.println("Error, el codigo digitado ya lo tiene otro cliente, intente de nuevo");
+                                    System.out.println("Error, el codigo digitado ya lo tiene otra aerolinea , intente de nuevo");
                                 }
                             }
-                            break;
-                        case 3:
-                            System.out.println("Escriba la nueva fecha de nacimiento (yyyy-mm-dd)");
-                            while(valido==false){
-                                try {
-                                    a.setFechaNacimiento(LocalDate.parse(cin.nextLine()));
-                                    valido = true;
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Error, la fecha no sigue el formato indicado, intente de nuevo");
-                                }
-                            }
-                            break;
-                        case 4:
-                            System.out.println("Escriba la nueva informacion de contacto");
-                            a.setInformacionContacto(Long.parseLong(cin.nextLine()));
                             break;
                         default:
                             otraVez=false;

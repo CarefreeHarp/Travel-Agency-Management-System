@@ -59,18 +59,18 @@ public class Vuelo extends AtributosComunes{
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
                 valido = false;
             } catch (ExcepcionCodigoRepetido e){
-                System.out.println("Error, el codigo digitado ya lo tiene otro cliente");
+                System.out.println("Error, el codigo digitado ya lo tiene otro vuelo");
             }
         }   
         valido = false;
-         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm");
-        System.out.println("Digite la fecha y hora de su vuelo(yyyy-mm-dd-hh-mm)");
+         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
+        System.out.println("Digite la fecha y hora de su vuelo(yyyy-mm-dd/hh:mm)");
         while(valido == false){
             try{
                 a.setFechaHora(LocalDateTime.parse(cin.nextLine(), dtf));
                 valido = true;
             }catch(DateTimeParseException e){
-                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd-hh-mm) , vuelva a intentar");
+                System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd/hh:mm) , vuelva a intentar");
                 valido = false;
             }
         }
@@ -91,12 +91,12 @@ public class Vuelo extends AtributosComunes{
         System.out.println("Digite el destino del vuelo");
         a.setDestino(cin.nextLine());
         lista.add(a);
-        cin.close();
     }
     public static void buscar(ArrayList<AtributosComunes> lista){
         int codigo = 0;
         int k=0;
         boolean valido = false;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
         System.out.println("Digite el codigo del vuelo");
         Scanner cin = new Scanner(System.in);
         while (valido == false) {
@@ -114,12 +114,13 @@ public class Vuelo extends AtributosComunes{
                 Vuelo a = (Vuelo)p; 
                 if(a.getCodigo() == codigo){
                     k++;
-                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha y hora del vuelo: " + a.getFechaHora()+"\n   Origen: " + a.getOrigen()+"\n  Destino: "+a.getDestino());    
+                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Precio: "+a.getPrecio()+"\n   Fecha y hora del vuelo: " + a.getFechaHora().format(dtf)+"\n   Origen: " + a.getOrigen()+"\n   Destino: "+a.getDestino());    
                 }
             }
         }
     }
     public static void eliminar(ArrayList<AtributosComunes> lista){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
         ArrayList<Vuelo> listaVuelos = new ArrayList();
         int codigo = 0;
         String aerolineaBuscada = "";
@@ -138,12 +139,13 @@ public class Vuelo extends AtributosComunes{
         while (valido1 == false) {
             try {
                 codigo = Integer.parseInt(cin.nextLine());
-                valido = true;
+                valido1 = true;
             } catch (NumberFormatException e) {
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
-                valido = false;
+                valido1 = false;
             }
         }
+        valido1 = false;
         System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
             if(p instanceof Vuelo){
@@ -152,18 +154,18 @@ public class Vuelo extends AtributosComunes{
                     listaVuelos.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha y hora del vuelo: " + a.getFechaHora()+"\n   Origen: " + a.getOrigen()+"\n  Destino: "+a.getDestino());    
+                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Precio: "+a.getPrecio()+"\n   Fecha y hora del vuelo: " + a.getFechaHora().format(dtf)+"\n   Origen: " + a.getOrigen()+"\n  Destino: "+a.getDestino());    
                     k++;
                 }
             } 
         }
         k = 0;
         if(encontrado == true){
-            System.out.println("Cual de los vuelos desea eliminar? Digite el numero del resultado de busqueda: ");
             while(valido == false){
+                System.out.println("Cual de los vuelos desea eliminar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam){
+                    if(op>tam|| op<1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -172,7 +174,7 @@ public class Vuelo extends AtributosComunes{
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().equals("si")){
+                    if(cin.nextLine().toLowerCase().contains("si")){
                         valido = true;
                         seguro = false;
                     }
@@ -189,9 +191,9 @@ public class Vuelo extends AtributosComunes{
                 while (opcion == false) {
                     eleccion = cin.nextLine();
                     eleccion = eleccion.toLowerCase();
-                    if(eleccion.equals("si")){
+                    if(eleccion.contains("si")){
                         opcion = true;
-                    }else if(eleccion.equals("no")){
+                    }else if(eleccion.contains("no")){
                         opcion = true;
                         seguro = false;
                     }else{
@@ -227,20 +229,20 @@ public class Vuelo extends AtributosComunes{
         boolean otraVez = true;
         String auxStr = "";
         LocalDateTime auxFecha = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
         ArrayList<Vuelo> listaVuelos = new ArrayList();
         Scanner cin = new Scanner(System.in);
         System.out.println("Digite el codigo del vuelo que desea modificar");
         while (valido1 == false) {
             try {
                 codigo = Integer.parseInt(cin.nextLine());
-                valido = true;
+                valido1 = true;
             } catch (NumberFormatException e) {
                 System.out.println("Error, solo puede digitar numeros, intente de nuevo");
-                valido = false;
+                valido1 = false;
             }
         }
-        String nombre = cin.nextLine();
+        valido1 = false;
         System.out.println("Resultados de Busqueda: ");
         for(AtributosComunes p : lista){
             if(p instanceof Vuelo){
@@ -249,18 +251,18 @@ public class Vuelo extends AtributosComunes{
                     listaVuelos.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha y hora del vuelo: " + a.getFechaHora()+"\n   Origen: " + a.getOrigen()+"\n  Destino: "+a.getDestino());    
+                    System.out.println(k+1+". Aerolinea: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Precio: "+a.getPrecio()+"\n   Fecha y hora del vuelo: " + a.getFechaHora().format(dtf)+"\n   Origen: " + a.getOrigen()+"\n  Destino: "+a.getDestino());    
                     k++;
                 }
             } 
         }
         k = 0;
         if(encontrado == true){
-            System.out.println("Cual de los vuelos desea modificar? Digite el numero del resultado de busqueda: ");
             while(valido == false){
+                System.out.println("Cual de los vuelos desea modificar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam){
+                    if(op>tam|| op<1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -269,7 +271,7 @@ public class Vuelo extends AtributosComunes{
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().equals("si")){
+                    if(cin.nextLine().toLowerCase().contains("si")){
                         valido = true;
                         seguro = false;
                     }
@@ -278,13 +280,13 @@ public class Vuelo extends AtributosComunes{
             if(seguro==true){
                 Vuelo a = listaVuelos.get(op-1);
                 for(AtributosComunes p : lista){
-                    if(a.getNombre().contains(p.getNombre())){
+                    if(a.getNombre().toLowerCase().contains(p.getNombre().toLowerCase())){
                         posEncontrada = k;
                     }
                     k++;
                 }
                 while(otraVez == true){
-                    System.out.println("Que desea cambiar del vuelo seleccionado? Digite el numero de opcion\n1. Aerolinea\n2. Codigo\n3. Fecha y hora\n4. Precio\n5. Origen\n6. Destino\n 7. Salir");
+                    System.out.println("Que desea cambiar del vuelo seleccionado? Digite el numero de opcion\n1. Aerolinea\n2. Codigo\n3. Fecha y hora\n4. Precio\n5. Origen\n6. Destino\n7. Salir");
                     valido=false;
                     while(valido==false){
                         try {
@@ -314,7 +316,7 @@ public class Vuelo extends AtributosComunes{
                             }
                             break;
                         case 3:
-                            System.out.println("Escriba la nueva fecha y hora(yyyy-mm-dd-hh-mm)");
+                            System.out.println("Escriba la nueva fecha y hora(yyyy-mm-dd/hh:mm)");
                             while(valido==false){
                                 try {
                                     a.setFechaHora(LocalDateTime.parse(cin.nextLine(), dtf));
