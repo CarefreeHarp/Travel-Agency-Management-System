@@ -29,3 +29,7 @@ Commit # 5 (Clase Reserva preliminar){
 	- De la clase reserva, se implementaron los métodos de registrar y de modificar solo el cliente
 	- Muchas correciones variadas
 }
+
+Commit # 6 (Correciones generales){
+	- Correcciones generales varias
+}

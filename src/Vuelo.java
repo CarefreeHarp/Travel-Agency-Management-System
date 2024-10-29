@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 public class Vuelo extends AtributosComunes {
 
-    private String origen;
-    private String destino;
+    private String origen = "";
+    private String destino = "";
     private LocalDateTime fechaHora;
-    private int precio;
+    private int precio = 0;
 
     public void setOrigen(String origen) {
         this.origen = origen;

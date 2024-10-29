@@ -326,8 +326,8 @@ public class Reserva {
                         "\n     Codigo: " + p.getCliente().getCodigo() +
                         "\n     Fecha de nacimiento: " + p.getCliente().getFechaNacimiento() +
                         "\n     Informacion de contacto: " + p.getCliente().getInformacionContacto() +
-                        "\n   - Plan Turistico:\n     Nombre" + p.getPlanTuristico().getNombre() +
-                        "\n     Codigo" + p.getPlanTuristico().getCodigo() +
+                        "\n   - Plan Turistico:\n     Nombre: " + p.getPlanTuristico().getNombre() +
+                        "\n     Codigo: " + p.getPlanTuristico().getCodigo() +
                         "\n     Descripcion: " + p.getPlanTuristico().getDescripcion() +
                         "\n     Destino: " + p.getPlanTuristico().getDestino() +
                         "\n     Fecha de inicio: " + p.getPlanTuristico().getFechaInicio() +
@@ -381,7 +381,7 @@ public class Reserva {
                 k=0;
                 while (otraVez == true) {
                     System.out.println(
-                            "Que desea cambiar de la reserva seleccionada? Digite el numero de opcion\n1. El cliente\n2. El plan turistico\n3. El vuelo\n4. El Hotel\n5. Fecha de reserva");
+                            "Que desea cambiar de la reserva seleccionada? Digite el numero de opcion\n1. El cliente\n2. El plan turistico\n3. El vuelo\n4. El Hotel\n5. Fecha de reserva\n6. Salir");
                     valido = false;
                     while (valido == false) {
                         try {

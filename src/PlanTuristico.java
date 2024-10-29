@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 public class PlanTuristico extends AtributosComunes {
     private String descripcion="";
-    private String destino;
+    private String destino="";
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private int precio;
+    private int precio = 0;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;

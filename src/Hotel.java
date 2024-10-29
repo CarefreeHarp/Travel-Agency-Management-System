@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Hotel extends AtributosComunes {
-    private String ubicacion;
-    private int categoria;
-    private int precioNoche;
+    private String ubicacion="";
+    private int categoria = 0;
+    private int precioNoche = 0;
 
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
