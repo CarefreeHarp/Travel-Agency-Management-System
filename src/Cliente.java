@@ -1,7 +1,10 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
 public class Cliente extends AtributosComunes {
     private LocalDate fechaNacimiento;
     private long informacionContacto;
@@ -74,12 +77,12 @@ public class Cliente extends AtributosComunes {
         System.out.println("Digite el nombre del cliente");
         Scanner cin = new Scanner(System.in);
         nombre = cin.nextLine();
-        System.out.println("Clientes encontrados con nombre: " + nombre);
+        System.out.println("Resultados de busqueda:");
         for(AtributosComunes p : lista){
             if(p instanceof Cliente){
                 Cliente a = (Cliente)p; 
-                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                if(a.getNombre().contains(nombre)){
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\tEdad: "+ChronoUnit.YEARS.between(a.getFechaNacimiento(),LocalDate.now()) +"\n   Informacion contacto: " + a.getInformacionContacto()+"\n");    
                     k++;
                 }
             }
@@ -105,11 +108,11 @@ public class Cliente extends AtributosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof Cliente){
                 Cliente a = (Cliente)p; 
-                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
+                if(a.getNombre().contains(nombre)){
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto()+"\n");    
                     k++;
                 }
             } 
@@ -120,7 +123,7 @@ public class Cliente extends AtributosComunes {
                 System.out.println("Cual de los clientes desea eliminar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam|| op<1){
+                    if(op>tam||op < 1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -129,7 +132,7 @@ public class Cliente extends AtributosComunes {
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().contains("si")){
+                    if(cin.nextLine().toLowerCase().equals("si")){
                         valido = true;
                         seguro = false;
                     }
@@ -146,9 +149,9 @@ public class Cliente extends AtributosComunes {
                 while (opcion == false) {
                     eleccion = cin.nextLine();
                     eleccion = eleccion.toLowerCase();
-                    if(eleccion.contains("si")){
+                    if(eleccion.equals("si")){
                         opcion = true;
-                    }else if(eleccion.contains("no")){
+                    }else if(eleccion.equals("no")){
                         opcion = true;
                         seguro = false;
                     }else{
@@ -188,11 +191,11 @@ public class Cliente extends AtributosComunes {
         for(AtributosComunes p : lista){
             if(p instanceof Cliente){
                 Cliente a = (Cliente)p; 
-                if(a.getNombre().toLowerCase().contains(nombre.toLowerCase())){
+                if(a.getNombre().contains(nombre)){
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;
-                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto());    
+                    System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: " + a.getCodigo()+"\n   Fecha de nacimiento: " + a.getFechaNacimiento()+"\n   Informacion contacto: " + a.getInformacionContacto()+"\n");    
                     k++;
                 }
             } 
@@ -203,7 +206,7 @@ public class Cliente extends AtributosComunes {
                 System.out.println("Cual de los clientes desea modificar? Digite el numero del resultado de busqueda: ");
                 try{
                     op = Integer.parseInt(cin.nextLine());
-                    if(op>tam|| op<1){
+                    if(op>tam||op < 1){
                         throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
                     }
                     valido = true;
@@ -212,7 +215,7 @@ public class Cliente extends AtributosComunes {
                     valido = false;
                 }catch(ExcepcionIndicePorFueraDelLimite e){
                     System.out.println("Desea cancelar la operacion? Si/No ");
-                    if(cin.nextLine().toLowerCase().contains("si")){
+                    if(cin.nextLine().toLowerCase().equals("si")){
                         valido = true;
                         seguro = false;
                     }
@@ -269,7 +272,14 @@ public class Cliente extends AtributosComunes {
                             break;
                         case 4:
                             System.out.println("Escriba la nueva informacion de contacto");
-                            a.setInformacionContacto(Long.parseLong(cin.nextLine()));
+                            while(valido==false){
+                                try {
+                                    a.setInformacionContacto(Long.parseLong(cin.nextLine()));
+                                    valido = true;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Error, debe digitar solo numeros validos, intente de nuevo");
+                                }
+                            }
                             break;
                         default:
                             otraVez=false;
@@ -279,5 +289,8 @@ public class Cliente extends AtributosComunes {
                 lista.set(posEncontrada,a);
             }
         }
+    }
+    public boolean estaVacio(){
+        return nombre.equals("");
     }
 }

@@ -24,3 +24,8 @@ Commit #4 (Clase hotel y Clase Aerolinea){
 	- El metodo setCategoria de los hoteles tira la excepcion "ExcepcionMasDeCincoEstrellas"
 	- Las confirmaciones de eliminacion de objetos ahora se pueden confirmar siempre y cuando el usuario digite un si a lo largo de todo el string usando .tolowercase().contains("si")
 }
+
+Commit # 5 (Clase Reserva preliminar){
+	- De la clase reserva, se implementaron los métodos de registrar y de modificar solo el cliente
+	- Muchas correciones variadas
+}

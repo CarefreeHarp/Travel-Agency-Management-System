@@ -8,7 +8,7 @@ public class Aerolinea extends AtributosComunes{
     }
     public Aerolinea(){
     }
-    public static void registro(ArrayList<AtributosComunes> lista){
+    public static Aerolinea registro(ArrayList<AtributosComunes> lista){
         Scanner cin = new Scanner(System.in);
         Aerolinea a = new Aerolinea();
         System.out.println("Digite el nombre de la aerolinea");
@@ -26,9 +26,9 @@ public class Aerolinea extends AtributosComunes{
                 System.out.println("Error, el codigo digitado ya lo tiene otra aerolinea");
             }
         }   
-       
         valido = false;
         lista.add(a);
+        return a;
     }
     public static void buscar(ArrayList<AtributosComunes> lista){
         String nombre;
@@ -226,5 +226,8 @@ public class Aerolinea extends AtributosComunes{
                 lista.set(posEncontrada,a);
             }
         }
+    }
+    public boolean estaVacio(){
+        return nombre.equals("");
     }
 }

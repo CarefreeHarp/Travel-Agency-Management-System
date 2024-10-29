@@ -330,4 +330,7 @@ public class Hotel extends AtributosComunes {
             }
         }
     }
+    public boolean estaVacio(){
+        return nombre.equals("");
+    }
 }

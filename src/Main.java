@@ -5,10 +5,11 @@ public class Main {
     public static void main(String[] args) {
         int opcion = 0;
         ArrayList<AtributosComunes> lista = new ArrayList<>();
+        ArrayList<Reserva> listaReservas = new ArrayList<>();
         Scanner cin = new Scanner(System.in);
         while (opcion != 7) {
             System.out.println(
-                    "Digite la opcion \n1. Gestionar Clientes \n2. Gestionar Planes Turisticos \n3. Gestionar Vuelos\n4. Gestionar aerolineas\n5. Gestionar hoteles");
+                    "Digite la opcion \n1. Gestionar Clientes \n2. Gestionar Planes Turisticos \n3. Gestionar Vuelos\n4. Gestionar aerolineas\n5. Gestionar hoteles\n6. Gestionar Reservas\n7. Salir");
             opcion = Integer.parseInt(cin.nextLine());
             switch (opcion) {
                 case 1:
@@ -115,6 +116,24 @@ public class Main {
                         default:
                             break;
                     }
+                    break;
+                case 6:
+                System.out.println("Digite la opcion \n1. Creacion\n2. Modificacion\n3. Cancelacion");
+                    opcion = Integer.parseInt(cin.nextLine());
+                    switch (opcion) {
+                        case 1:
+                            Reserva.creacion(lista, listaReservas);
+                            break;
+                        case 2:
+                            Reserva.modificacion(lista, listaReservas);
+                            break;
+                        case 3:
+                            Reserva.cancelacion(lista, listaReservas);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 default:
                     break;
             }
