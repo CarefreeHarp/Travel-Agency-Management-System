@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Aerolinea extends AtributosComunes{
     public Aerolinea(String nombre, int codigo){
         this.nombre = nombre;

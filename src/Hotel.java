@@ -1,8 +1,7 @@
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-public class Hotel extends AtributosComunes {
+public class Hotel extends AtributosComunes{
     private String ubicacion="";
     private int categoria = 0;
     private int precioNoche = 0;

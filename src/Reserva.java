@@ -1,10 +1,10 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-public class Reserva {
+public class Reserva implements Serializable{
     private Cliente cliente;
     private PlanTuristico planTuristico;
     private Vuelo vuelo;
@@ -310,9 +310,11 @@ public class Reserva {
         boolean encontrado = false;
         boolean seguro = true;
         boolean otraVez = true;
-        Cliente cliente = new Cliente();
-        ArrayList<Cliente> listaClientes = new ArrayList();
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
+        ArrayList<PlanTuristico> listaPlanesTuristicos = new ArrayList<>();
+        ArrayList<Vuelo> listaVuelos = new ArrayList<>();
         ArrayList<Reserva> listaReservasAux = new ArrayList<>();
+        ArrayList<Hotel> listaHoteles = new ArrayList<>();
         System.out.println("Digite el nombre del cliente que tiene la reserva que desea modificar");
         Scanner cin = new Scanner(System.in);
         String nombre = cin.nextLine();
@@ -322,29 +324,29 @@ public class Reserva {
                 listaReservasAux.add(p);
                 tam++;
                 encontrado = true;
-                System.out.println(k + 1 + ". - Cliente:\n     Nombre: " + p.getCliente().getNombre() +
+                System.out.println("RESERVA # "+  (k+1) + ".\n   - CLIENTE:\n     Nombre: " + p.getCliente().getNombre() +
                         "\n     Codigo: " + p.getCliente().getCodigo() +
                         "\n     Fecha de nacimiento: " + p.getCliente().getFechaNacimiento() +
                         "\n     Informacion de contacto: " + p.getCliente().getInformacionContacto() +
-                        "\n   - Plan Turistico:\n     Nombre: " + p.getPlanTuristico().getNombre() +
+                        "\n   - PLAN TURISTICO:\n     Nombre: " + p.getPlanTuristico().getNombre() +
                         "\n     Codigo: " + p.getPlanTuristico().getCodigo() +
                         "\n     Descripcion: " + p.getPlanTuristico().getDescripcion() +
                         "\n     Destino: " + p.getPlanTuristico().getDestino() +
                         "\n     Fecha de inicio: " + p.getPlanTuristico().getFechaInicio() +
                         "\n     Fecha de fin: " + p.getPlanTuristico().getFechaFin() +
                         "\n     Precio: " + p.getPlanTuristico().getPrecio() +
-                        "\n   - Vuelo:\n     Codigo: " + p.getVuelo().getCodigo() +
+                        "\n   - VUELO:\n     Codigo: " + p.getVuelo().getCodigo() +
                         "\n     Aerolinea: " + p.getVuelo().getNombre() +
                         "\n     Origen: " + p.getVuelo().getOrigen() +
                         "\n     Destino: " + p.getVuelo().getDestino() +
                         "\n     Fecha y hora: " + p.getVuelo().getFechaHora() +
                         "\n     Precio: " + p.getVuelo().getPrecio() +
-                        "\n   - Hotel:\n     Nombre: " + p.getHotel().getNombre() +
+                        "\n   - HOTEL:\n     Nombre: " + p.getHotel().getNombre() +
                         "\n     Codigo: " + p.getHotel().getCodigo() +
                         "\n     Ubicacion: " + p.getHotel().getUbicacion() +
                         "\n     Categoria: " + p.getHotel().getCategoria() +
                         " Estrellas\n     Precio por noche: " + p.getHotel().getPrecioNoche() +
-                        "\n   - Fecha de Reserva: " + p.getFechaReserva());
+                        "\n   - FECHA DE RESERVA: " + p.getFechaReserva());
                 k++;
             }
         }
@@ -372,13 +374,13 @@ public class Reserva {
             }
             if (seguro == true) {
                 Reserva a = listaReservasAux.get(op - 1);
-                for (AtributosComunes p : lista) {
+                for (Reserva p : listaReservas) {
                     if (a.getCodigo() == p.getCodigo()) {
                         posEncontrada = k;
                     }
                     k++;
                 }
-                k=0;
+                k = 0;
                 while (otraVez == true) {
                     System.out.println(
                             "Que desea cambiar de la reserva seleccionada? Digite el numero de opcion\n1. El cliente\n2. El plan turistico\n3. El vuelo\n4. El Hotel\n5. Fecha de reserva\n6. Salir");
@@ -392,6 +394,7 @@ public class Reserva {
                         }
                     }
                     valido = false;
+                    k = 0;
                     switch (op2) {
                         case 1:
                             for (AtributosComunes p : lista) {
@@ -399,16 +402,19 @@ public class Reserva {
                                     Cliente b = (Cliente) p;
                                     k++;
                                     tam++;
-                                    System.out.println(k + ". Nombre: " + b.getNombre() + "\n   Codigo: " + b.getCodigo()
-                                            + "\n   Fecha de nacimiento: " + b.getFechaNacimiento() + "\n   Informacion contacto: "
-                                            + b.getInformacionContacto() + "\n");
+                                    System.out
+                                            .println(k + ". Nombre: " + b.getNombre() + "\n   Codigo: " + b.getCodigo()
+                                                    + "\n   Fecha de nacimiento: " + b.getFechaNacimiento()
+                                                    + "\n   Informacion contacto: "
+                                                    + b.getInformacionContacto() + "\n");
                                     listaClientes.add(b);
                                     encontrado = true;
                                 }
                             }
                             if (encontrado == true) {
                                 while (valido == false) {
-                                    System.out.println("Digite el numero de opcion del cliente para hacer el cambio en la reserva");
+                                    System.out.println(
+                                            "Digite el numero de opcion del cliente para hacer el cambio en la reserva");
                                     try {
                                         op2 = Integer.parseInt(cin.nextLine());
                                         if (op2 > tam || op2 < 1) {
@@ -426,19 +432,155 @@ public class Reserva {
                                         }
                                     }
                                 }
+                                valido = false;
                                 if (seguro == true) {
                                     a.setCliente(listaClientes.get(op2 - 1));
                                 }
                             }
                             break;
                         case 2:
-                            
+                            for (AtributosComunes p : lista) {
+                                if (p instanceof PlanTuristico) {
+                                    PlanTuristico b = (PlanTuristico) p;
+                                    k++;
+                                    tam++;
+                                    System.out
+                                            .println(k + ". Nombre: " + b.getNombre()
+                                                    + "\n   Codigo: " + b.getCodigo()
+                                                    + "\n   Descripcion: " + b.getDescripcion()
+                                                    + "\n   Destino: " + b.getDestino()
+                                                    + "\n   Fecha de Inicio: " + b.getFechaInicio()
+                                                    + "\n   Fecha de fin: " + b.getFechaFin()
+                                                    + "\n   Precio: " + b.getPrecio());
+                                    listaPlanesTuristicos.add(b);
+                                    encontrado = true;
+                                }
+                            }
+                            if (encontrado == true) {
+                                while (valido == false) {
+                                    System.out.println(
+                                            "Digite el numero de opcion del plan turistico para hacer el cambio en la reserva");
+                                    try {
+                                        op2 = Integer.parseInt(cin.nextLine());
+                                        if (op2 > tam || op2 < 1) {
+                                            throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                                        }
+                                        valido = true;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Error, debe ingresar un número, trate de nuevo");
+                                        valido = false;
+                                    } catch (ExcepcionIndicePorFueraDelLimite e) {
+                                        System.out.println("Desea cancelar la operacion? Si/No ");
+                                        if (cin.nextLine().toLowerCase().equals("si")) {
+                                            valido = true;
+                                            seguro = false;
+                                        }
+                                    }
+                                }
+                                valido = false;
+                                if (seguro == true) {
+                                    a.setPlanTuristico(listaPlanesTuristicos.get(op2 - 1));
+                                }
+                            }
                             break;
                         case 3:
-                            
+                            for (AtributosComunes p : lista) {
+                                if (p instanceof Vuelo) {
+                                    Vuelo b = (Vuelo) p;
+                                    k++;
+                                    tam++;
+                                    System.out
+                                            .println(k + ". Aerolinea: " + b.getNombre()
+                                                    + "\n   Codigo: " + b.getCodigo()
+                                                    + "\n   Destino: " + b.getDestino()
+                                                    + "\n   Fecha: " + b.getFechaHora()
+                                                    + "\n   Precio: " + b.getPrecio());
+                                    listaVuelos.add(b);
+                                    encontrado = true;
+                                }
+                            }
+                            if (encontrado == true) {
+                                while (valido == false) {
+                                    System.out.println(
+                                            "Digite el numero de opcion del vuelo para hacer el cambio en la reserva");
+                                    try {
+                                        op2 = Integer.parseInt(cin.nextLine());
+                                        if (op2 > tam || op2 < 1) {
+                                            throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                                        }
+                                        valido = true;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Error, debe ingresar un número, trate de nuevo");
+                                        valido = false;
+                                    } catch (ExcepcionIndicePorFueraDelLimite e) {
+                                        System.out.println("Desea cancelar la operacion? Si/No ");
+                                        if (cin.nextLine().toLowerCase().equals("si")) {
+                                            valido = true;
+                                            seguro = false;
+                                        }
+                                    }
+                                }
+                                valido = false;
+                                if (seguro == true) {
+                                    a.setVuelo(listaVuelos.get(op2 - 1));
+                                }
+                            }
                             break;
                         case 4:
-                            
+                            for (AtributosComunes p : lista) {
+                                if (p instanceof Hotel) {
+                                    Hotel b = (Hotel) p;
+                                    k++;
+                                    tam++;
+                                    System.out
+                                            .println(k + ". Nombre: " + b.getNombre()
+                                                    + "\n   Codigo: " + b.getCodigo()
+                                                    + "\n   Ubicacion: " + b.getUbicacion()
+                                                    + "\n   Categoria: " + b.getCategoria() + "Estrellas"
+                                                    + "\n   Precio por noche: " + b.getPrecioNoche());
+                                    listaHoteles.add(b);
+                                    encontrado = true;
+                                }
+                            }
+                            if (encontrado == true) {
+                                while (valido == false) {
+                                    System.out.println(
+                                            "Digite el numero de opcion del vuelo para hacer el cambio en la reserva");
+                                    try {
+                                        op2 = Integer.parseInt(cin.nextLine());
+                                        if (op2 > tam || op2 < 1) {
+                                            throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                                        }
+                                        valido = true;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Error, debe ingresar un número, trate de nuevo");
+                                        valido = false;
+                                    } catch (ExcepcionIndicePorFueraDelLimite e) {
+                                        System.out.println("Desea cancelar la operacion? Si/No ");
+                                        if (cin.nextLine().toLowerCase().equals("si")) {
+                                            valido = true;
+                                            seguro = false;
+                                        }
+                                    }
+                                }
+                                valido = false;
+                                if (seguro == true) {
+                                    a.setHotel(listaHoteles.get(op2 - 1));
+                                }
+                            }
+                            break;
+                        case 5:
+                            while (valido == false) {
+                                System.out.println("Digite la nueva fecha de la reserva (yyyy-mm-dd) (Fecha anterior: "
+                                        + a.getFechaReserva() + " )");
+                                try {
+                                    a.setFechaReserva(LocalDate.parse(cin.nextLine()));
+                                    valido = true;
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("La fecha no cumple con el formato adecuado (yyyy-mm-dd)");
+                                }
+                            }
+                            valido = false;
                             break;
                         default:
                             otraVez = false;
@@ -453,7 +595,135 @@ public class Reserva {
 
     }
 
-    public static void cancelacion(ArrayList<AtributosComunes> Lista, ArrayList<Reserva> listaReservas) {
-
+    public static void cancelacion(ArrayList<AtributosComunes> lista, ArrayList<Reserva> listaReservas) {
+        int tam = 0;
+        int k = 0;
+        int i = 0;
+        int op = 0;
+        int posEncontrada = 0;
+        int codigoBuscado = 0;
+        int posCliente = 0;
+        int eliminarC = 0;
+        int posPlanTuristico = 0;
+        int eliminarP = 0;
+        int posVuelo = 0;
+        int eliminarV = 0;
+        int posHotel = 0;
+        int eliminarH = 0;
+        ArrayList<Reserva> listaReservasAux = new ArrayList<>();
+        boolean valido = false;
+        boolean encontrado = false;
+        boolean seguro = true;
+        System.out.println("Digite el nombre del cliente que tiene la reserva que desea cancelar");
+        Scanner cin = new Scanner(System.in);
+        String nombre = cin.nextLine();
+        System.out.println("Resultados de Busqueda: ");
+        for (Reserva p : listaReservas) {
+            if (p.getCliente().getNombre().contains(nombre)) {
+                listaReservasAux.add(p);
+                tam++;
+                encontrado = true;
+                System.out.println(k + 1 + ". - CLIENTE:\n     Nombre: " + p.getCliente().getNombre() +
+                        "\n     Codigo: " + p.getCliente().getCodigo() +
+                        "\n     Fecha de nacimiento: " + p.getCliente().getFechaNacimiento() +
+                        "\n     Informacion de contacto: " + p.getCliente().getInformacionContacto() +
+                        "\n   - PLAN TURISTICO:\n     Nombre: " + p.getPlanTuristico().getNombre() +
+                        "\n     Codigo: " + p.getPlanTuristico().getCodigo() +
+                        "\n     Descripcion: " + p.getPlanTuristico().getDescripcion() +
+                        "\n     Destino: " + p.getPlanTuristico().getDestino() +
+                        "\n     Fecha de inicio: " + p.getPlanTuristico().getFechaInicio() +
+                        "\n     Fecha de fin: " + p.getPlanTuristico().getFechaFin() +
+                        "\n     Precio: " + p.getPlanTuristico().getPrecio() +
+                        "\n   - VUELO:\n     Codigo: " + p.getVuelo().getCodigo() +
+                        "\n     Aerolinea: " + p.getVuelo().getNombre() +
+                        "\n     Origen: " + p.getVuelo().getOrigen() +
+                        "\n     Destino: " + p.getVuelo().getDestino() +
+                        "\n     Fecha y hora: " + p.getVuelo().getFechaHora() +
+                        "\n     Precio: " + p.getVuelo().getPrecio() +
+                        "\n   - HOTEL:\n     Nombre: " + p.getHotel().getNombre() +
+                        "\n     Codigo: " + p.getHotel().getCodigo() +
+                        "\n     Ubicacion: " + p.getHotel().getUbicacion() +
+                        "\n     Categoria: " + p.getHotel().getCategoria() +
+                        " Estrellas\n     Precio por noche: " + p.getHotel().getPrecioNoche() +
+                        "\n   - FECHA DE RESERVA: " + p.getFechaReserva());
+                k++;
+            }
+        }
+        k = 0;
+        if (encontrado == true) {
+            while (valido == false) {
+                System.out
+                        .println("Cual de las reservas desea modificar? Digite el numero del resultado de busqueda: ");
+                try {
+                    op = Integer.parseInt(cin.nextLine());
+                    if (op > tam || op < 1) {
+                        throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                    }
+                    valido = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Error, debe ingresar un número, trate de nuevo");
+                    valido = false;
+                } catch (ExcepcionIndicePorFueraDelLimite e) {
+                    System.out.println("Desea cancelar la operacion? Si/No ");
+                    if (cin.nextLine().toLowerCase().equals("si")) {
+                        valido = true;
+                        seguro = false;
+                    }
+                }
+            }
+            if (seguro == true) {
+                Reserva a = listaReservasAux.get(op - 1);
+                for (Reserva p : listaReservas) {
+                    if (a.getCodigo() == p.getCodigo()) {
+                        posEncontrada = k;
+                        codigoBuscado = p.getCodigo();
+                    }
+                    k++;
+                }
+                Reserva b = listaReservas.get(posEncontrada);
+                listaReservas.remove(posEncontrada);
+                for(AtributosComunes p : lista){
+                    if(p instanceof Cliente){
+                        Cliente cliente = (Cliente)p;
+                        if(cliente.getCodigo() == b.getCliente().getCodigo()){
+                            eliminarC = posCliente;
+                        }
+                    }
+                    posCliente++;
+                }
+                lista.remove(eliminarC);
+                for(AtributosComunes p : lista){
+                    if(p instanceof PlanTuristico){
+                        PlanTuristico planTuristico = (PlanTuristico)p;
+                        if(planTuristico.getCodigo() == b.getPlanTuristico().getCodigo()){
+                            eliminarP = posPlanTuristico;
+                        }
+                    }
+                    posPlanTuristico++;
+                }
+                lista.remove(eliminarP);
+                for(AtributosComunes p : lista){
+                    if(p instanceof Vuelo){
+                        Vuelo vuelo = (Vuelo)p;
+                        if(vuelo.getCodigo() == b.getVuelo().getCodigo()){
+                            eliminarV = posVuelo;
+                        }
+                    }
+                    posVuelo++;
+                }
+                lista.remove(eliminarV);
+                for(AtributosComunes p : lista){
+                    if(p instanceof Hotel){
+                        Hotel hotel = (Hotel)p;
+                        if(hotel.getCodigo() == b.getHotel().getCodigo()){
+                            eliminarH = posHotel;
+                        }
+                    }
+                    posHotel++;
+                }
+                lista.remove(eliminarH);
+            }
+        }
+        System.out.println("Reserva cancelada exitosamente");
     }
 }

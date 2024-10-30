@@ -33,3 +33,14 @@ Commit # 5 (Clase Reserva preliminar){
 Commit # 6 (Correciones generales){
 	- Correcciones generales varias
 }
+
+Commit # 7 (Release Candidate #1){
+	- Se realizaron muchas correciones
+	- Se crearon los métodos que permiten guardar y leer de los archivos
+	- Se realizo el método de escribir el informe en el archivo de texto
+	- Se hizo el método de modificar reservas
+	- Se hizo el método de cancelar reservas
+	- Se prohíbe que el usuario digite una fecha de fin anterior a la fecha de inicio en los planes turísticos gracias a una nueva excepción personalizada "ExcepcionFechasSinSentido"
+	- Se identifica si una clase no esta llenada si su atributo nombre es "", es decir, vacío (Aplica para todas las clases excepto reserva ya que esta no tiene atributo nombre)
+	- Primer candidato a ser la entrega final
+}

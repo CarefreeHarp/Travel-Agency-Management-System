@@ -1,6 +1,6 @@
+import java.io.Serializable;
 import java.util.ArrayList;
-
-public class AtributosComunes {
+public class AtributosComunes implements Serializable{
     protected int codigo;
     protected String nombre = "";
     public void setCodigo(int codigo,AtributosComunes a, ArrayList<AtributosComunes> lista) throws ExcepcionCodigoRepetido{

@@ -2,8 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-public class PlanTuristico extends AtributosComunes {
+public class PlanTuristico extends AtributosComunes{
     private String descripcion="";
     private String destino="";
     private LocalDate fechaInicio;
@@ -18,7 +17,10 @@ public class PlanTuristico extends AtributosComunes {
         this.destino = destino;
     }
 
-    public void setFechaFin(LocalDate fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) throws ExcepcionFechasSinSentido{
+        if(this.fechaInicio.isAfter(fechaFin)){
+            throw new ExcepcionFechasSinSentido("Fechas sin sentido");
+        }
         this.fechaFin = fechaFin;
     }
 
@@ -102,6 +104,8 @@ public class PlanTuristico extends AtributosComunes {
                 valido = true;
             } catch (DateTimeParseException e) {
                 System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd), vuelva a intentar");
+            } catch (ExcepcionFechasSinSentido e){
+                System.out.println("La fecha de fin esta antes de la fecha de inicio, eso no tiene sentido jajaja (Este mensaje fue mostrado gracias a una excepcion personalizada)");
             }
         }
         valido = false;
@@ -330,6 +334,8 @@ public class PlanTuristico extends AtributosComunes {
                                     valido = true;
                                 } catch (DateTimeParseException e) {
                                     System.out.println("Error, la fecha no sigue el formato indicado, intente de nuevo");
+                                } catch (ExcepcionFechasSinSentido e){
+                                    System.out.println("La fecha de fin esta antes de la fecha de inicio, eso no tiene sentido jajaja (Este mensaje fue capturado gracias a una excepcion personalizada)");
                                 }
                             }
                             break;

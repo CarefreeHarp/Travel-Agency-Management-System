@@ -3,8 +3,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-public class Cliente extends AtributosComunes {
+public class Cliente extends AtributosComunes{
     private LocalDate fechaNacimiento;
     private long informacionContacto;
 
