@@ -4,7 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-public class Reserva implements Serializable{
+
+public class Reserva implements Serializable {
     private Cliente cliente;
     private PlanTuristico planTuristico;
     private Vuelo vuelo;
@@ -123,6 +124,7 @@ public class Reserva implements Serializable{
                     if (cin.nextLine().toLowerCase().equals("si")) {
                         valido = true;
                         seguro = false;
+                        encontrado=false;
                     }
                 }
             }
@@ -324,29 +326,30 @@ public class Reserva implements Serializable{
                 listaReservasAux.add(p);
                 tam++;
                 encontrado = true;
-                System.out.println("RESERVA # "+  (k+1) + ".\n   - CLIENTE:\n     Nombre: " + p.getCliente().getNombre() +
-                        "\n     Codigo: " + p.getCliente().getCodigo() +
-                        "\n     Fecha de nacimiento: " + p.getCliente().getFechaNacimiento() +
-                        "\n     Informacion de contacto: " + p.getCliente().getInformacionContacto() +
-                        "\n   - PLAN TURISTICO:\n     Nombre: " + p.getPlanTuristico().getNombre() +
-                        "\n     Codigo: " + p.getPlanTuristico().getCodigo() +
-                        "\n     Descripcion: " + p.getPlanTuristico().getDescripcion() +
-                        "\n     Destino: " + p.getPlanTuristico().getDestino() +
-                        "\n     Fecha de inicio: " + p.getPlanTuristico().getFechaInicio() +
-                        "\n     Fecha de fin: " + p.getPlanTuristico().getFechaFin() +
-                        "\n     Precio: " + p.getPlanTuristico().getPrecio() +
-                        "\n   - VUELO:\n     Codigo: " + p.getVuelo().getCodigo() +
-                        "\n     Aerolinea: " + p.getVuelo().getNombre() +
-                        "\n     Origen: " + p.getVuelo().getOrigen() +
-                        "\n     Destino: " + p.getVuelo().getDestino() +
-                        "\n     Fecha y hora: " + p.getVuelo().getFechaHora() +
-                        "\n     Precio: " + p.getVuelo().getPrecio() +
-                        "\n   - HOTEL:\n     Nombre: " + p.getHotel().getNombre() +
-                        "\n     Codigo: " + p.getHotel().getCodigo() +
-                        "\n     Ubicacion: " + p.getHotel().getUbicacion() +
-                        "\n     Categoria: " + p.getHotel().getCategoria() +
-                        " Estrellas\n     Precio por noche: " + p.getHotel().getPrecioNoche() +
-                        "\n   - FECHA DE RESERVA: " + p.getFechaReserva());
+                System.out.println(
+                        "RESERVA # " + (k + 1) + ".\n   - CLIENTE:\n     Nombre: " + p.getCliente().getNombre() +
+                                "\n     Codigo: " + p.getCliente().getCodigo() +
+                                "\n     Fecha de nacimiento: " + p.getCliente().getFechaNacimiento() +
+                                "\n     Informacion de contacto: " + p.getCliente().getInformacionContacto() +
+                                "\n   - PLAN TURISTICO:\n     Nombre: " + p.getPlanTuristico().getNombre() +
+                                "\n     Codigo: " + p.getPlanTuristico().getCodigo() +
+                                "\n     Descripcion: " + p.getPlanTuristico().getDescripcion() +
+                                "\n     Destino: " + p.getPlanTuristico().getDestino() +
+                                "\n     Fecha de inicio: " + p.getPlanTuristico().getFechaInicio() +
+                                "\n     Fecha de fin: " + p.getPlanTuristico().getFechaFin() +
+                                "\n     Precio: " + p.getPlanTuristico().getPrecio() +
+                                "\n   - VUELO:\n     Codigo: " + p.getVuelo().getCodigo() +
+                                "\n     Aerolinea: " + p.getVuelo().getNombre() +
+                                "\n     Origen: " + p.getVuelo().getOrigen() +
+                                "\n     Destino: " + p.getVuelo().getDestino() +
+                                "\n     Fecha y hora: " + p.getVuelo().getFechaHora() +
+                                "\n     Precio: " + p.getVuelo().getPrecio() +
+                                "\n   - HOTEL:\n     Nombre: " + p.getHotel().getNombre() +
+                                "\n     Codigo: " + p.getHotel().getCodigo() +
+                                "\n     Ubicacion: " + p.getHotel().getUbicacion() +
+                                "\n     Categoria: " + p.getHotel().getCategoria() +
+                                " Estrellas\n     Precio por noche: " + p.getHotel().getPrecioNoche() +
+                                "\n   - FECHA DE RESERVA: " + p.getFechaReserva());
                 k++;
             }
         }
@@ -598,18 +601,9 @@ public class Reserva implements Serializable{
     public static void cancelacion(ArrayList<AtributosComunes> lista, ArrayList<Reserva> listaReservas) {
         int tam = 0;
         int k = 0;
-        int i = 0;
         int op = 0;
         int posEncontrada = 0;
         int codigoBuscado = 0;
-        int posCliente = 0;
-        int eliminarC = 0;
-        int posPlanTuristico = 0;
-        int eliminarP = 0;
-        int posVuelo = 0;
-        int eliminarV = 0;
-        int posHotel = 0;
-        int eliminarH = 0;
         ArrayList<Reserva> listaReservasAux = new ArrayList<>();
         boolean valido = false;
         boolean encontrado = false;
@@ -680,50 +674,43 @@ public class Reserva implements Serializable{
                     }
                     k++;
                 }
-                Reserva b = listaReservas.get(posEncontrada);
                 listaReservas.remove(posEncontrada);
-                for(AtributosComunes p : lista){
-                    if(p instanceof Cliente){
-                        Cliente cliente = (Cliente)p;
-                        if(cliente.getCodigo() == b.getCliente().getCodigo()){
-                            eliminarC = posCliente;
-                        }
-                    }
-                    posCliente++;
-                }
-                lista.remove(eliminarC);
-                for(AtributosComunes p : lista){
-                    if(p instanceof PlanTuristico){
-                        PlanTuristico planTuristico = (PlanTuristico)p;
-                        if(planTuristico.getCodigo() == b.getPlanTuristico().getCodigo()){
-                            eliminarP = posPlanTuristico;
-                        }
-                    }
-                    posPlanTuristico++;
-                }
-                lista.remove(eliminarP);
-                for(AtributosComunes p : lista){
-                    if(p instanceof Vuelo){
-                        Vuelo vuelo = (Vuelo)p;
-                        if(vuelo.getCodigo() == b.getVuelo().getCodigo()){
-                            eliminarV = posVuelo;
-                        }
-                    }
-                    posVuelo++;
-                }
-                lista.remove(eliminarV);
-                for(AtributosComunes p : lista){
-                    if(p instanceof Hotel){
-                        Hotel hotel = (Hotel)p;
-                        if(hotel.getCodigo() == b.getHotel().getCodigo()){
-                            eliminarH = posHotel;
-                        }
-                    }
-                    posHotel++;
-                }
-                lista.remove(eliminarH);
             }
         }
-        System.out.println("Reserva cancelada exitosamente");
+    }
+
+    public static boolean verificacion(AtributosComunes p, ArrayList<AtributosComunes> lista, ArrayList<Reserva> listaReservas) {
+        if (p instanceof Cliente) {
+            for (Reserva b : listaReservas) {
+                if (b.getCliente().getCodigo()==p.getCodigo()) {
+                    return false;
+                }
+            }
+        } else if (p instanceof PlanTuristico) {
+            for (Reserva b : listaReservas) {
+                if (b.getPlanTuristico().getCodigo()==p.getCodigo()) {
+                    return false;
+                }
+            }
+        } else if (p instanceof Vuelo) {
+            for (Reserva b : listaReservas) {
+                if (b.getVuelo().getCodigo()==p.getCodigo()) {
+                    return false;
+                }
+            }
+        } else if (p instanceof Aerolinea) {
+            for (Reserva b : listaReservas) {
+                if (b.getVuelo().getCodigo()==p.getCodigo()) {
+                    return false;
+                }
+            }
+        } else if (p instanceof Hotel) {
+            for (Reserva b : listaReservas) {
+                if (b.getHotel().getCodigo() == p.getCodigo()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

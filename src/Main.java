@@ -52,7 +52,7 @@ public class Main {
                             Cliente.modificar(lista);
                             break;
                         case 4:
-                            Cliente.eliminar(lista);
+                            Cliente.eliminar(lista,listaReservas);
                             break;
                         default:
                             break;
@@ -82,7 +82,7 @@ public class Main {
                             PlanTuristico.modificar(lista);
                             break;
                         case 4:
-                            PlanTuristico.eliminar(lista);
+                            PlanTuristico.eliminar(lista,listaReservas);
                             break;
                         default:
                             break;
@@ -112,7 +112,7 @@ public class Main {
                             Vuelo.modificar(lista);
                             break;
                         case 4:
-                            Vuelo.eliminar(lista);
+                            Vuelo.eliminar(lista,listaReservas);
                             break;
                         default:
                             break;
@@ -142,7 +142,7 @@ public class Main {
                             Aerolinea.modificar(lista);
                             break;
                         case 4:
-                            Aerolinea.eliminar(lista);
+                            Aerolinea.eliminar(lista,listaReservas);
                             break;
                         default:
                             break;
@@ -172,7 +172,7 @@ public class Main {
                             Hotel.modificar(lista);
                             break;
                         case 4:
-                            Hotel.eliminar(lista);
+                            Hotel.eliminar(lista,listaReservas);
                             break;
                         default:
                             break;
@@ -209,6 +209,7 @@ public class Main {
                     MetodosDeArchivos.informeReservas(listaReservas);
                     break;
                 default:
+                    opcion = 8;
                     break;
             }
         }

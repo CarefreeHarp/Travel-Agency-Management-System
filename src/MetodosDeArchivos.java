@@ -191,11 +191,11 @@ public class MetodosDeArchivos {
                         }
                         if(!p.getVuelo().getNombre().equals("")){
                             archivo.write("\nCodigo del vuelo: "
-                            + p.getVuelo().getDestino() + "\nOrigen: " + p.getVuelo().getOrigen() + "\nDestino: "
+                            + p.getVuelo().getCodigo() + "\nOrigen: " + p.getVuelo().getOrigen() + "\nDestino: "
                             + p.getVuelo().getDestino() + "\nFecha y hora del vuelo: "
-                            + p.getVuelo().getFechaHora().format(dtf) + "\nPrecio: " + p.getVuelo().getPrecio());
+                            + p.getVuelo().getFechaHora().format(dtf) + "\nPrecio del vuelo: " + p.getVuelo().getPrecio());
                         } else {
-                            archivo.write("\nCodigo del vuelo: -\nOrigen: -\nDestino: -\nFecha y hora del vuelo: -\nPrecio: -");
+                            archivo.write("\nCodigo del vuelo: -\nOrigen: -\nDestino: -\nFecha y hora del vuelo: -\nPrecio del vuelo: -");
                         }
                         if(!p.getHotel().getNombre().equals("")){
                             archivo.write("\nNombre del hotel: " + p.getHotel().getNombre() 

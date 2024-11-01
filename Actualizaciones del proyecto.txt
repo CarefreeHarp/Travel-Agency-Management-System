@@ -7,7 +7,7 @@ Commit #2 (Clase PlanTuristico y metodos de modificar){
 	- Creé el metodo para modificar clientes
 	- Creé el metodo para modificar planes turisticos
 	- Creé la excepción de "ExcepcionIndicePorFueraDelLimite" para controlar que a la hora de que el usuario elija cual objeto modificar/eliminar nos aseguremos de que esté dentro del tamaño arreglo
-	- Modifiqué el método setCodigo de la clase AtributosComunes. Cada vez que se llama a este método, verifica en todo el ArrayList de objetos que no se repita el mismo código para la misma clase (Si se puede repetir código si dos 	objetos son de diferentes clases)
+	- Modifiqué el método setCodigo de la clase AtributosComunes. Cada vez que se llama a este método, verifica en todo el ArrayList de objetos que no se repita el mismo código para la misma clase (Si se puede repetir código si dos objetos son de diferentes clases)
 	- Creé la excepción de "ExcepcionCodigoRepetido" para que el método setCódigo de la clase AtributosComunes lo pueda tirar y podamos controlarlo
 	- El main ya esta habilitado para usar todos lo que hemos programado
 }
@@ -43,4 +43,11 @@ Commit # 7 (Release Candidate #1){
 	- Se prohíbe que el usuario digite una fecha de fin anterior a la fecha de inicio en los planes turísticos gracias a una nueva excepción personalizada "ExcepcionFechasSinSentido"
 	- Se identifica si una clase no esta llenada si su atributo nombre es "", es decir, vacío (Aplica para todas las clases excepto reserva ya que esta no tiene atributo nombre)
 	- Primer candidato a ser la entrega final
+}
+Commit # 8 (Release Candidate #2){
+	- Se arregló que no se tenía en cuenta que al eliminar objetos de la lista, se hacía por código y aunque el código no se repite en la misma clase, si se repetía para diferentes clases por lo cual, borraba objetos con el mismo código pero de diferente clase
+	- Se implementó el método que verifica que no se puedan eliminar objetos si existen en una reserva
+	- Se implementaron mejoras visuales para la creación del archivo txt de reservas
+	- Se implementó para el menú principal que cada vez que se digite un número diferente a los del menú, el programa termine la ejecución
+	- Segundo candidato a ser la prueba final
 }

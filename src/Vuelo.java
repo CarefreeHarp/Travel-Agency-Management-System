@@ -186,7 +186,7 @@ public class Vuelo extends AtributosComunes{
         }
     }
 
-    public static void eliminar(ArrayList<AtributosComunes> lista) {
+    public static void eliminar(ArrayList<AtributosComunes> lista, ArrayList<Reserva> listaReservas) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
         ArrayList<Vuelo> listaVuelos = new ArrayList();
         int codigo = 0;
@@ -273,12 +273,18 @@ public class Vuelo extends AtributosComunes{
                 if (seguro == true) {
                     k = 0;
                     for (AtributosComunes p : lista) {
-                        if (p.getNombre() == aerolineaBuscada) {
-                            posk = k;
+                        if(p instanceof Vuelo){
+                            if (p.getNombre().equals(aerolineaBuscada)) {
+                                posk = k;
+                            }
                         }
                         k++;
                     }
-                    lista.remove(posk);
+                    if(!Reserva.verificacion(lista.get(posk), lista, listaReservas)){
+                        System.out.println("No se pudo borrar, el vuelo seleccionado ya que pertenece a una reserva");
+                    } else {
+                        lista.remove(posk);
+                    }
                 } else {
                     System.out.println("operacion anulada :D");
                 }
