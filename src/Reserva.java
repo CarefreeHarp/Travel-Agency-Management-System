@@ -291,7 +291,7 @@ public class Reserva implements Serializable {
                     fechaReserva = LocalDate.parse(cin.nextLine());
                     valido = true;
                 } catch (DateTimeParseException e) {
-                    System.out.println("La fecha no cumple el formato adecuado");
+                    System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd)");
                 }
             }
             for (Reserva p : listaReservas) {
@@ -322,7 +322,7 @@ public class Reserva implements Serializable {
         String nombre = cin.nextLine();
         System.out.println("Resultados de Busqueda: ");
         for (Reserva p : listaReservas) {
-            if (p.getCliente().getNombre().contains(nombre)) {
+            if (p.getCliente().getNombre().toLowerCase().contains(nombre)) {
                 listaReservasAux.add(p);
                 tam++;
                 encontrado = true;
@@ -398,6 +398,7 @@ public class Reserva implements Serializable {
                     }
                     valido = false;
                     k = 0;
+                    tam = 0;
                     switch (op2) {
                         case 1:
                             for (AtributosComunes p : lista) {
@@ -613,7 +614,7 @@ public class Reserva implements Serializable {
         String nombre = cin.nextLine();
         System.out.println("Resultados de Busqueda: ");
         for (Reserva p : listaReservas) {
-            if (p.getCliente().getNombre().contains(nombre)) {
+            if (p.getCliente().getNombre().toLowerCase().contains(nombre)) {
                 listaReservasAux.add(p);
                 tam++;
                 encontrado = true;

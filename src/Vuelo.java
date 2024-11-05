@@ -90,7 +90,7 @@ public class Vuelo extends AtributosComunes{
                         System.out.println("Error, debe ingresar un número, trate de nuevo");
                         valido = false;
                     } catch (ExcepcionIndicePorFueraDelLimite e) {
-                        System.out.println("Desea cancelar la operacion? Si/No ");
+                        System.out.println("Esa aerolinea no existe, desea cancelar la operacion? Si/No ");
                         if (cin.nextLine().toLowerCase().equals("si")) {
                             valido = true;
                             seguro = false;
@@ -111,48 +111,50 @@ public class Vuelo extends AtributosComunes{
             Aerolinea b = Aerolinea.registro(lista);
             a.setNombre(b.getNombre());
         }
-        valido = false;
-        System.out.println("Digite el codigo del vuelo:");
-        while (valido == false) {
-            try {
-                a.setCodigo(Integer.parseInt(cin.nextLine()), a, lista);
-                valido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Error, solo puede digitar numeros, intente de nuevo");
-                valido = false;
-            } catch (ExcepcionCodigoRepetido e) {
-                System.out.println("Error, el codigo digitado ya lo tiene otro vuelo");
+        if(seguro==true){
+            valido = false;
+            System.out.println("Digite el codigo del vuelo:");
+            while (valido == false) {
+                try {
+                    a.setCodigo(Integer.parseInt(cin.nextLine()), a, lista);
+                    valido = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Error, solo puede digitar numeros, intente de nuevo");
+                    valido = false;
+                } catch (ExcepcionCodigoRepetido e) {
+                    System.out.println("Error, el codigo digitado ya lo tiene otro vuelo");
+                }
             }
-        }
-        valido = false;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
-        System.out.println("Digite la fecha y hora de su vuelo(yyyy-mm-dd/hh:mm)");
-        while (valido == false) {
-            try {
-                a.setFechaHora(LocalDateTime.parse(cin.nextLine(), dtf));
-                valido = true;
-            } catch (DateTimeParseException e) {
-                System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd/hh:mm) , vuelva a intentar");
-                valido = false;
+            valido = false;
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
+            System.out.println("Digite la fecha y hora de su vuelo(yyyy-mm-dd/hh:mm)");
+            while (valido == false) {
+                try {
+                    a.setFechaHora(LocalDateTime.parse(cin.nextLine(), dtf));
+                    valido = true;
+                } catch (DateTimeParseException e) {
+                    System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd/hh:mm) , vuelva a intentar");
+                    valido = false;
+                }
             }
-        }
-        valido = false;
-        System.out.println("Digite el precio del vuelo");
-        while (valido == false) {
-            try {
-                a.setPrecio(Integer.parseInt(cin.nextLine()));
-                valido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Error, solo puede digitar numeros, intente de nuevo");
-                valido = false;
+            valido = false;
+            System.out.println("Digite el precio del vuelo");
+            while (valido == false) {
+                try {
+                    a.setPrecio(Integer.parseInt(cin.nextLine()));
+                    valido = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Error, solo puede digitar numeros, intente de nuevo");
+                    valido = false;
+                }
             }
+            valido = false;
+            System.out.println("Digite el origen del vuelo");
+            a.setOrigen(cin.nextLine());
+            System.out.println("Digite el destino del vuelo");
+            a.setDestino(cin.nextLine());
+            lista.add(a);
         }
-        valido = false;
-        System.out.println("Digite el origen del vuelo");
-        a.setOrigen(cin.nextLine());
-        System.out.println("Digite el destino del vuelo");
-        a.setDestino(cin.nextLine());
-        lista.add(a);
     }
 
     public static void buscar(ArrayList<AtributosComunes> lista) {
@@ -307,7 +309,8 @@ public class Vuelo extends AtributosComunes{
         String auxStr = "";
         LocalDateTime auxFecha = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
-        ArrayList<Vuelo> listaVuelos = new ArrayList();
+        ArrayList<Vuelo> listaVuelos = new ArrayList<>();
+        ArrayList<Aerolinea> listaAerolinea = new ArrayList<>(); 
         Scanner cin = new Scanner(System.in);
         System.out.println("Digite el codigo del vuelo que desea modificar");
         while (valido1 == false) {
@@ -366,6 +369,7 @@ public class Vuelo extends AtributosComunes{
                     k++;
                 }
                 while (otraVez == true) {
+                    tam = 0;
                     System.out.println(
                             "Que desea cambiar del vuelo seleccionado? Digite el numero de opcion\n1. Aerolinea\n2. Codigo\n3. Fecha y hora\n4. Precio\n5. Origen\n6. Destino\n7. Salir");
                     valido = false;
@@ -380,8 +384,39 @@ public class Vuelo extends AtributosComunes{
                     valido = false;
                     switch (op2) {
                         case 1:
-                            System.out.println("Escriba la nueva aerolinea");
-                            a.setNombre(cin.nextLine());
+                            System.out.println("Las aerolineas registradas en el sistema son:");
+                            k = 0;
+                            for (AtributosComunes p : lista) {
+                                if (p instanceof Aerolinea) {
+                                    Aerolinea b = (Aerolinea) p;
+                                    tam++;
+                                    System.out.println(k+1+". Nombre: "+b.getNombre()+"\n   Codigo: " + b.getCodigo());
+                                    k++;
+                                    listaAerolinea.add(b);
+                                }
+                            }
+                            while (valido == false) {
+                                System.out.println("Digite el numero de opcion de aerolinea que desea para modificar el vuelo");
+                                try {
+                                    op = Integer.parseInt(cin.nextLine());
+                                    if (op > tam || op < 1) {
+                                        throw new ExcepcionIndicePorFueraDelLimite("Esa opcion no existe");
+                                    }
+                                    valido = true;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Error, debe ingresar un número, trate de nuevo");
+                                    valido = false;
+                                } catch (ExcepcionIndicePorFueraDelLimite e) {
+                                    System.out.println("Esa aerolinea no existe, desea cancelar la operacion? Si/No ");
+                                    if (cin.nextLine().toLowerCase().equals("si")) {
+                                        valido = true;
+                                        seguro = false;
+                                    }
+                                }
+                            }
+                            if (seguro == true) {
+                                a.setNombre(listaAerolinea.get(op - 1).getNombre());
+                            }
                             break;
                         case 2:
                             System.out.println("Escriba el nuevo codigo");

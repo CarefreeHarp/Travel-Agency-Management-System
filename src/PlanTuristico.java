@@ -93,7 +93,7 @@ public class PlanTuristico extends AtributosComunes{
                 a.setFechaInicio(LocalDate.parse(cin.nextLine()));
                 valido = true;
             } catch (DateTimeParseException e) {
-                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd), vuelva a intentar");
+                System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd), vuelva a intentar");
             }
         }
         valido = false;
@@ -103,7 +103,7 @@ public class PlanTuristico extends AtributosComunes{
                 a.setFechaFin(LocalDate.parse(cin.nextLine()));
                 valido = true;
             } catch (DateTimeParseException e) {
-                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd), vuelva a intentar");
+                System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd), vuelva a intentar");
             } catch (ExcepcionFechasSinSentido e){
                 System.out.println("La fecha de fin esta antes de la fecha de inicio, eso no tiene sentido jajaja (Este mensaje fue mostrado gracias a una excepcion personalizada)");
             }
@@ -156,7 +156,7 @@ public class PlanTuristico extends AtributosComunes{
         for(AtributosComunes p : lista){
             if(p instanceof PlanTuristico){
                 PlanTuristico a = (PlanTuristico) p;
-                if(a.getNombre().contains(nombre)){
+                if(a.getNombre().toLowerCase().contains(nombre)){
                     listaPlanes.add(a);
                     encontrado = true;
                     System.out.println(k+1+". Nombre: "+a.getNombre()+"\n   Codigo: "+a.getCodigo()+"\n   Descripcion: "+a.getDescripcion()+"\n   Destino: "+a.getDestino()+"\n   Fecha de inicio: "+a.getFechaInicio()+"\n   Fecha de fin: "+a.getFechaFin()+"\n   Precio: $"+a.getPrecio()+"\n");
@@ -245,7 +245,7 @@ public class PlanTuristico extends AtributosComunes{
         for(AtributosComunes p : lista){
             if(p instanceof PlanTuristico){
                 PlanTuristico a = (PlanTuristico)p; 
-                if(a.getNombre().contains(nombre)){
+                if(a.getNombre().toLowerCase().contains(nombre)){
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;

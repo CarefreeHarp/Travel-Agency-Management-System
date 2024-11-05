@@ -58,7 +58,7 @@ public class Cliente extends AtributosComunes{
                 a.setFechaNacimiento(LocalDate.parse(cin.nextLine()));
                 valido = true;
             } catch (DateTimeParseException e) {
-                System.out.println("La fecha no cumple el formato adecuado (yyy-mm-dd) , vuelva a intentar");
+                System.out.println("La fecha no cumple el formato adecuado (yyyy-mm-dd) , vuelva a intentar");
                 valido = false;
             }
         }
@@ -87,7 +87,7 @@ public class Cliente extends AtributosComunes{
         for (AtributosComunes p : lista) {
             if (p instanceof Cliente) {
                 Cliente a = (Cliente) p;
-                if (a.getNombre().contains(nombre)) {
+                if (a.getNombre().toLowerCase().contains(nombre)) {
                     System.out.println(k + 1 + ". Nombre: " + a.getNombre() + "\n   Codigo: " + a.getCodigo()
                             + "\n   Fecha de nacimiento: " + a.getFechaNacimiento() + "\tEdad: "
                             + ChronoUnit.YEARS.between(a.getFechaNacimiento(), LocalDate.now())
@@ -118,7 +118,7 @@ public class Cliente extends AtributosComunes{
         for (AtributosComunes p : lista) {
             if (p instanceof Cliente) {
                 Cliente a = (Cliente) p;
-                if (a.getNombre().contains(nombre)) {
+                if (a.getNombre().toLowerCase().contains(nombre)) {
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;
@@ -210,7 +210,7 @@ public class Cliente extends AtributosComunes{
         for (AtributosComunes p : lista) {
             if (p instanceof Cliente) {
                 Cliente a = (Cliente) p;
-                if (a.getNombre().contains(nombre)) {
+                if (a.getNombre().toLowerCase().contains(nombre)) {
                     listaClientes.add(a);
                     tam++;
                     encontrado = true;
